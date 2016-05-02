@@ -1,5 +1,7 @@
 package com.facape.Server;
 
+import com.facape.Client.InterfaceClient;
+
 import java.io.Serializable;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -22,7 +24,7 @@ public class Server implements InterfaceServidor, Serializable {
     public int estabelecerConexao() throws RemoteException {
         idCliente++;
         try{
-            clientesConectados[idCliente] = (InterfaceCliente) Naming.lookup("Cliente");
+            clientesConectados[idCliente] = (InterfaceClient) Naming.lookup("Cliente");
         }catch(Exception e){
             System.out.println("Erro " + e.getMessage());
         }
@@ -45,7 +47,7 @@ public class Server implements InterfaceServidor, Serializable {
     public void sendToAll(String msg, int idCliente, String nomeCliente) throws RemoteException {
         for(int i = 0; i < this.clientesConectados.length; i++){
             if((clientesConectados[i] != null) && (i != idCliente)){
-                ((InterfaceCliente) this.clientesConectados[i]).enviarMensagem(nomeCliente+": "+msg);
+                ((InterfaceClient) this.clientesConectados[i]).enviarMensagem(nomeCliente+": "+msg);
             }
         }
     }
