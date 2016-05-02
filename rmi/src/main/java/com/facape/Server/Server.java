@@ -1,9 +1,11 @@
 package com.facape.Server;
 
 import com.facape.Client.InterfaceClient;
+import com.facape.Config.Config;
 
 import java.io.Serializable;
 import java.rmi.Naming;
+import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 
 /**
@@ -19,6 +21,19 @@ public class Server implements InterfaceServidor, Serializable {
 
     //@super
     public Server(){};
+
+
+    public static void main(String args[]){
+        try{
+            System.setSecurityManager(new RMISecurityManager());
+            Server servidor = new Server();
+            System.out.println("Registrando servidor");
+            Naming.rebind(Config.SERVER_NAME, servidor);
+            System.out.println("SERVIDOR EXECUTADO");
+        }catch(Exception e){
+            System.out.println("Erro " + e.getMessage());
+        }
+    }
 
     @Override
     public int estabelecerConexao() throws RemoteException {
